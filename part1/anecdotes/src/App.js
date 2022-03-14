@@ -6,6 +6,16 @@ const Button = (props) => (
   </button>
 )
 
+const Winner = (props) => {
+  const winnerIndex = props.votes.indexOf(Math.max(...props.votes))
+  return (
+    <div>
+      <h2>Anecdote with most votes</h2>
+      {props.anecdotes[winnerIndex]}
+    </div>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often',
@@ -21,7 +31,7 @@ const App = () => {
   const [votes, setVotes] = useState(new Uint8Array(anecdotes.length))
 
   const nextAnecdote = () => setSelected(Math.floor(Math.random()*anecdotes.length))
-  
+
   const vote = () => {
     const votes2 = [...votes]
     votes2[selected]+=1
@@ -30,10 +40,12 @@ const App = () => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]} 
       <br />
       <Button onClick={nextAnecdote} text="next anecdote" />
       <Button onClick={vote} text="vote" />
+      <Winner anecdotes={anecdotes} votes={votes} />
     </div>
   )
 }
