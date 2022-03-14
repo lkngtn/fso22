@@ -7,24 +7,33 @@ const Button = (props) => (
 )
 
 const StatisticLine = (props) => (
-  <p>{props.text}: {props.value}</p>
+  <tr>
+    <td>{props.text}</td>
+    <td>{props.value}</td>
+  </tr>
 )
 
 const Statistics = (props) => {
   const total = props.good + props.neutral + props.bad
-  const average = total > 0 ? (props.good - props.bad) / total : 0 
-  const positive = total > 0 ? props.good / total : 0
+  const average =  (props.good - props.bad) / total 
+  const positive = (props.good / total * 100).toFixed(2)+"%"
   if (total > 0 ) {
     return (
-      <div>
-        <h2>statistics</h2>
-          <StatisticLine text={"good"} value={props.good} />
-          <StatisticLine text={"neutral"} value={props.neutral} />
-          <StatisticLine text={"bad"} value={props.bad} />
-          <StatisticLine text={"all"} value={total} />
-          <StatisticLine text={"average"} value={average} />
-          <StatisticLine text={"postive"} value={positive} />
-      </div>
+        <table>
+          <thead>
+            <tr>
+              <th><h2>statistics</h2></th>
+            </tr>
+          </thead>
+          <tbody>
+            <StatisticLine text={"good"} value={props.good} />
+            <StatisticLine text={"neutral"} value={props.neutral} />
+            <StatisticLine text={"bad"} value={props.bad} />
+            <StatisticLine text={"all"} value={total} />
+            <StatisticLine text={"average"} value={average} />
+            <StatisticLine text={"postive"} value={positive} />
+          </tbody>
+        </table>
     )
   }
   return (
