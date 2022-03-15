@@ -10,26 +10,33 @@ const Filter = ({nameFilter, handleFilterChange}) => {
   )
 }
 
-const Countries = ({countries, nameFilter}) => {
+const Country = ({country}) => {
+  return (
+    <div>
+      <h3> {country.name.common} {country.flag} </h3>
+      <p>Capital: {country.capital} </p>
+      <p>Area: {country.area} </p>
+      <h4>Languages</h4>
+      <ul>
+        {Object.values(country.languages).map(language => <li key={language}>{language}</li>)}
+      </ul>
+    </div>
+  )
+}
+
+const Countries = ({countries, nameFilter, setNameFilter}) => {
   const inFilter = (country) => {
     return nameFilter === '' ? true : country.name.common.toLowerCase().includes(nameFilter.toLowerCase())
   }
+
   let filteredCountries = countries.filter(inFilter)
   if (filteredCountries.length === 1) {
     let country = filteredCountries[0]
     return (
-      <div>
-        <h3> {country.name.common} {country.flag} </h3>
-        <p>Capital: {country.capital} </p>
-        <p>Area: {country.area} </p>
-        <h4>Languages</h4>
-        <ul>
-          {Object.values(country.languages).map(language => <li key={language}>{language}</li>)}
-        </ul>
-      </div>
+      <Country country={country} />
     )
   } else {
-    return filteredCountries.map(country => <p key={country.name.official}>{country.name.common}</p>)
+    return filteredCountries.map(country => <p key={country.name.official}>{country.name.common}<button onClick={() => setNameFilter(country.name.common)}>Select</button></p>)
   }
 }
 
@@ -48,12 +55,12 @@ const App = () => {
       setCountries(response.data)
     })
   }, [])
-
+  
   return (
     <div>
       <h2>Search Countries</h2>
       <Filter handleFilterChange={handleFilterChange} nameFilter={nameFilter} />
-      <Countries countries={countries} nameFilter={nameFilter} />
+      <Countries countries={countries} nameFilter={nameFilter} setNameFilter={setNameFilter} />
     </div>
   )
 }
