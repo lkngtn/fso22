@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
-// TODO refactor components out of App components
-// should have component for Filter, PersonForm, and PersonEntry
 
 const Filter = ({nameFilter, handleFilterChange}) => {
   return (
@@ -57,6 +56,13 @@ const App = () => {
       setPersons(persons.concat({ 'name': newName, 'number': newNumber, 'id': persons.length + 1 }))
     }
   }
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/persons').then(response => {
+      console.log('promise fulfilled')
+      setPersons(response.data)
+    })
+  }, [])
 
   return (
     <div>
