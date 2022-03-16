@@ -25,11 +25,11 @@ const PersonForm = ({addName, newName, newNumber, handleNameChange, handleNumber
   )
 } 
 
-const Persons = ({persons, nameFilter}) => {
+const Persons = ({persons, nameFilter, removeName}) => {
   const inFilter = (person) => {
     return nameFilter === '' ? true : person.name.toLowerCase().includes(nameFilter.toLowerCase())
   }
-  return persons.filter(inFilter).map(person => <p key={person.id}>{person.name}: {person.number} </p>)
+  return persons.filter(inFilter).map(person => <p key={person.id}>{person.name}: {person.number} <button onClick={() => removeName(person.id)}>Delete</button> </p>)
 }
 
 const App = () => {
@@ -59,6 +59,14 @@ const App = () => {
     }
   }
 
+  const removeName = (id) => {
+    if (window.confirm('Are you sure you want to delete?')) {
+      phoneBook
+        .destroy(id)
+        .then(setPersons(persons.filter(person => person.id !== id)))
+    }     
+  }
+
   useEffect(() => {
     phoneBook.getAll().then(entries => {
       setPersons(entries)
@@ -80,7 +88,7 @@ const App = () => {
       />
       
       <h2>Numbers</h2>
-      <Persons persons={persons} nameFilter={nameFilter} />
+      <Persons persons={persons} nameFilter={nameFilter} removeName={removeName} />
     </div>
   )
 }

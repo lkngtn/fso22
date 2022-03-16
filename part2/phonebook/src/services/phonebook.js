@@ -5,6 +5,8 @@ const getAll = () => axios.get(baseUrl).then(response => response.data)
 
 const create = (newObject) => axios.post(baseUrl, newObject).then(response => response.data)
 
-const phoneBook = {getAll, create}
+const destroy = (id) => axios.delete(`${baseUrl}/${id}`).then(response => response.data)
+
+const phoneBook = {getAll, create, destroy}
 
 export default phoneBook
