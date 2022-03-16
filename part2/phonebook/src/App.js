@@ -49,14 +49,16 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    if (persons.map(person => person.name).includes(newName)) {
-      window.alert(`${newName} is already added to the phonebook`)
-    } else {
-      const newPerson = { 'name': newName, 'number': newNumber }
+    const entry = persons.filter(person => person.name === newName)
+    if (entry === []) {
       phoneBook
-        .create(newPerson)
+        .create({ 'name': newName, 'number': newNumber })
         .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
-    }
+    } else if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+      phoneBook
+        .update(entry[0].id, {...entry[0], 'number': newNumber})
+        .then(returnedPerson => setPersons(persons.map(person => person.id !== entry[0].id ? person : returnedPerson)))
+    } 
   }
 
   const removeName = (id) => {
