@@ -9,6 +9,18 @@ const Filter = ({nameFilter, handleFilterChange}) => {
   )
 }
 
+const Notification = ({ notification }) => {
+  if ( notification.message === null) {
+    return null
+  }
+  
+  return (
+    <div className={`${notification.type} message`}>
+      {notification.message}
+    </div>
+  )
+}
+
 const PersonForm = ({addName, newName, newNumber, handleNameChange, handleNumberChange}) => {
   return (
     <form onSubmit={addName}>
@@ -42,6 +54,11 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNameFilter] = useState('')
+  const [notify, setNotify] = useState({message: null, type: null})
+
+  const dismissNotify = (seconds) => {
+    setTimeout(() => setNotify({message: null, type:null}), seconds)
+  }
 
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
@@ -50,14 +67,26 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault()
     const entry = persons.filter(person => person.name === newName)
-    if (entry === []) {
+    if (entry.length === 0) {
       phoneBook
         .create({ 'name': newName, 'number': newNumber })
-        .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNotify({message: `Successfully added ${returnedPerson.name}`, type:'success' })
+          dismissNotify(5000)
+        })
     } else if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
       phoneBook
         .update(entry[0].id, {...entry[0], 'number': newNumber})
-        .then(returnedPerson => setPersons(persons.map(person => person.id !== entry[0].id ? person : returnedPerson)))
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id !== entry[0].id ? person : returnedPerson))
+          setNotify({message: `Successfully updated number for ${returnedPerson.name} to ${returnedPerson.number}`, type: 'success'})
+          dismissNotify(5000)
+        })
+        .catch(error => {
+          setNotify({message: `Information on ${newName} has already been removed from the server`, type: 'error'})
+          dismissNotify(5000)
+        })
     } 
   }
 
@@ -78,6 +107,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notify} />
       <Filter handleFilterChange={handleFilterChange} nameFilter={nameFilter} />
 
       <h3>add new</h3>
