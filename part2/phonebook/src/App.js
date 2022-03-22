@@ -70,17 +70,29 @@ const App = () => {
           setNotify({message: `Successfully added ${returnedPerson.name}`, type:'success' })
           dismissNotify(5000)
         })
+        .catch(error => {
+          console.log(error.response.data)
+          setNotify({message: `${error.response.data.error}`, type: 'error'})
+          dismissNotify(5000)
+        })
     } else if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
       phoneBook
         .update(entry[0].id, {...entry[0], 'number': newNumber})
         .then(returnedPerson => {
-          setPersons(persons.map(person => person.id !== entry[0].id ? person : returnedPerson))
-          setNotify({message: `Successfully updated number for ${returnedPerson.name} to ${returnedPerson.number}`, type: 'success'})
-          dismissNotify(5000)
+          if (returnedPerson) {
+            setPersons(persons.map(person => person.id !== entry[0].id ? person : returnedPerson))
+            setNotify({message: `Successfully updated number for ${returnedPerson.name} to ${returnedPerson.number}`, type: 'success'})
+            dismissNotify(5000)
+          } else {
+            setNotify({message: `Cannot update ${newName} because it has been removed from the server`, type: 'error'})
+            dismissNotify(5000)
+          }
         })
         .catch(error => {
-          setNotify({message: `Information on ${newName} has already been removed from the server`, type: 'error'})
-          dismissNotify(5000)
+          if (error.response) {
+            setNotify({message: `${error.response.data.error}`, type: 'error'})
+            dismissNotify(5000)
+          }
         })
     } 
   }
