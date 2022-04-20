@@ -21,13 +21,9 @@ module.exports = {
       "sourceType": "module"
   },
   "plugins": [
-    "jest", "react", "cypress"
+    "jest", "react", "cypress", "prettier"
   ],
   "rules": {
-      "indent": [
-          "error",
-          2  
-      ],
       "linebreak-style": [
           "error",
           "unix"
@@ -51,7 +47,8 @@ module.exports = {
       "no-console": 0,
       "react/prop-types": 0,
       "react/react-in-jsx-scope": "off",
-      "jest/expect-expect": "off"
+      "jest/expect-expect": "off",
+      "prettier/prettier": "error"
   },
   "settings": {
     "react": {
