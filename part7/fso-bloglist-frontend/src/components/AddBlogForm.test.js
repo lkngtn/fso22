@@ -17,7 +17,7 @@ describe('<AddBlogForm />', () => {
     const blog = {
       title: 'this is a test',
       author: 'bob ross',
-      url: 'www.bobsblog.com'
+      url: 'www.bobsblog.com',
     }
 
     const submitButton = screen.getByText('add blog')

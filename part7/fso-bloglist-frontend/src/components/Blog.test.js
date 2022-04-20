@@ -12,14 +12,12 @@ describe('<Blog />', () => {
     title: 'this is a blog title',
     url: 'www.website.com',
     author: 'bob ross',
-    likes: 2
+    likes: 2,
   }
 
   beforeEach(() => {
     addLike = jest.fn()
-    container = render(
-      <Blog blog={blog} addLike={addLike} />
-    ).container
+    container = render(<Blog blog={blog} addLike={addLike} />).container
   })
 
   test('renders content', () => {
@@ -57,6 +55,3 @@ describe('<Blog />', () => {
     expect(addLike.mock.calls).toHaveLength(2)
   })
 })
-
-
-

@@ -14,36 +14,38 @@ const LoginForm = ({ login }) => {
   }
 
   return (
-    <Toggalable showLabel='login' hideLabel='cancel'>
+    <Toggalable showLabel="login" hideLabel="cancel">
       <form onSubmit={handleSubmit}>
         <div>
           username
           <input
-            type='text'
-            id='username'
+            type="text"
+            id="username"
             value={username}
-            name='Username'
+            name="Username"
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
           password
           <input
-            type='password'
-            id='password'
+            type="password"
+            id="password"
             value={password}
-            name='Password'
+            name="Password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type='submit' id='login-button'>login</button>
+        <button type="submit" id="login-button">
+          login
+        </button>
       </form>
     </Toggalable>
   )
 }
 
 LoginForm.propTypes = {
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
 }
 
 export default LoginForm

@@ -15,9 +15,9 @@ const App = () => {
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs.sort((a,b) => b.likes - a.likes))
-    )
+    blogService
+      .getAll()
+      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)))
   }, [])
 
   useEffect(() => {
@@ -43,13 +43,21 @@ const App = () => {
   }
 
   const addLike = async (blogObject) => {
-    const likedBlog = { ...blogObject, likes: blogObject.likes + 1, user: blogObject.user.id }
+    const likedBlog = {
+      ...blogObject,
+      likes: blogObject.likes + 1,
+      user: blogObject.user.id,
+    }
     const updatedBlog = await blogService.update(blogObject.id, likedBlog)
-    setBlogs(blogs.reduce( (updatedBlogs, blog) => {
-      return blog.id === updatedBlog.id ?
-        updatedBlogs.concat(updatedBlog) :
-        updatedBlogs.concat(blog)},
-    []).sort((a,b) => b.likes - a.likes ))
+    setBlogs(
+      blogs
+        .reduce((updatedBlogs, blog) => {
+          return blog.id === updatedBlog.id
+            ? updatedBlogs.concat(updatedBlog)
+            : updatedBlogs.concat(blog)
+        }, [])
+        .sort((a, b) => b.likes - a.likes)
+    )
   }
 
   const logout = () => {
@@ -62,15 +70,14 @@ const App = () => {
   const login = async (username, password) => {
     try {
       const user = await loginService.login({
-        username, password
+        username,
+        password,
       })
-      window.localStorage.setItem(
-        'loggedInUser', JSON.stringify(user)
-      )
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
       setUser(user)
       blogService.setToken(user.token)
       notify('Login Successful', 'success', 5000)
-    } catch ( exception ) {
+    } catch (exception) {
       notify('Wrong Credentials', 'error', 5000)
     }
   }
@@ -78,8 +85,8 @@ const App = () => {
   const deleteBlog = async (blog) => {
     if (window.confirm(`Are you sure you want to delete ${blog.title}`)) {
       await blogService.destroy(blog.id)
-      notify(`Successfully deleted: '${blog.title}'`, 'success', 5000)
-      setBlogs(blogs.filter(blogInDb => blogInDb.id !== blog.id ))
+      notify(`Successfully deleted: "${blog.title}"`, 'success', 5000)
+      setBlogs(blogs.filter((blogInDb) => blogInDb.id !== blog.id))
     }
   }
 
@@ -89,18 +96,26 @@ const App = () => {
     <div>
       {notification && <Notification notification={notification} />}
       <h2>blogs</h2>
-      {user === null ?
-        <LoginForm login={login} /> :
+      {!user && <LoginForm login={login} />}
+      {user && (
         <div>
-          <p>{user.name} logged-in <button onClick={logout}>logout</button></p>
-          <Togglable showLabel='add blog' hideLabel='cancel' ref={addBlogRef}>
+          <p>
+            {user.name} logged-in <button onClick={logout}>logout</button>
+          </p>
+          <Togglable showLabel="add blog" hideLabel="cancel" ref={addBlogRef}>
             <AddBlogForm addBlog={addBlog} />
           </Togglable>
         </div>
-      }
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} addLike={addLike} deleteBlog={deleteBlog} user={user} />
       )}
+      {blogs.map((blog) => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          addLike={addLike}
+          deleteBlog={deleteBlog}
+          user={user}
+        />
+      ))}
     </div>
   )
 }
