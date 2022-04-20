@@ -1,4 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
+import {
+  initializeBlogs,
+  createBlog,
+  addLike,
+  destroyBlog,
+} from './reducers/blogReducer'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
@@ -10,15 +17,16 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const dispatch = useDispatch()
+  const blogs = useSelector((state) => {
+    return [...state.blogs].sort((a, b) => b.likes - a.likes)
+  })
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)))
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
@@ -38,26 +46,12 @@ const App = () => {
 
   const addBlog = async (blogObject) => {
     addBlogRef.current.toggleVisibility()
-    setBlogs(blogs.concat(await blogService.create(blogObject)))
+    dispatch(createBlog(blogObject))
     notify(`Successfully added '${blogObject.title}'`, 'success', 5000)
   }
 
-  const addLike = async (blogObject) => {
-    const likedBlog = {
-      ...blogObject,
-      likes: blogObject.likes + 1,
-      user: blogObject.user.id,
-    }
-    const updatedBlog = await blogService.update(blogObject.id, likedBlog)
-    setBlogs(
-      blogs
-        .reduce((updatedBlogs, blog) => {
-          return blog.id === updatedBlog.id
-            ? updatedBlogs.concat(updatedBlog)
-            : updatedBlogs.concat(blog)
-        }, [])
-        .sort((a, b) => b.likes - a.likes)
-    )
+  const like = (blog) => {
+    dispatch(addLike(blog))
   }
 
   const logout = () => {
@@ -86,7 +80,7 @@ const App = () => {
     if (window.confirm(`Are you sure you want to delete ${blog.title}`)) {
       await blogService.destroy(blog.id)
       notify(`Successfully deleted: "${blog.title}"`, 'success', 5000)
-      setBlogs(blogs.filter((blogInDb) => blogInDb.id !== blog.id))
+      dispatch(destroyBlog(blog))
     }
   }
 
@@ -111,7 +105,7 @@ const App = () => {
         <Blog
           key={blog.id}
           blog={blog}
-          addLike={addLike}
+          like={like}
           deleteBlog={deleteBlog}
           user={user}
         />
