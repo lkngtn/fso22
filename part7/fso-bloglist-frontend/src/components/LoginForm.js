@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../reducers/userReducer'
 import Toggalable from './Togglable'
 
-const LoginForm = ({ login }) => {
+const LoginForm = () => {
+  const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    login(username, password)
+    dispatch(loginUser(username, password))
     setUsername('')
     setPassword('')
   }
@@ -42,10 +44,6 @@ const LoginForm = ({ login }) => {
       </form>
     </Toggalable>
   )
-}
-
-LoginForm.propTypes = {
-  login: PropTypes.func.isRequired,
 }
 
 export default LoginForm
