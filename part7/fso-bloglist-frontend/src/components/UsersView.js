@@ -1,20 +1,8 @@
-import { useEffect, useState } from 'react'
-import userService from '../services/users'
+import { useSelector } from 'react-redux'
 
 const UsersView = () => {
-  const [users, setUsers] = useState()
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const data = await userService.getAll()
-      setUsers(data)
-      setIsLoading(false)
-    }
-    fetchUsers().catch(console.error)
-  }, [])
-
-  if (isLoading) return <span>is loading</span>
+  const users = useSelector((state) => state.users)
+  if (!users) return <span>is loading</span>
   return (
     <table>
       <thead>
