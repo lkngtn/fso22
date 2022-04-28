@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { initializeBlogs } from './reducers/blogReducer'
-import { logoutUser, setUser } from './reducers/userReducer'
+import { initializeUsers } from './reducers/usersReducer'
+import { logoutUser, setUser } from './reducers/loginReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 
@@ -9,6 +10,7 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import BlogView from './components/BlogView'
 import UsersView from './components/UsersView'
+import UserView from './components/UserView'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -17,6 +19,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
   useEffect(() => {
@@ -43,6 +46,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<BlogView user={user} />} />
         <Route path="/users" element={<UsersView />} />
+        <Route path="/user/:id" element={<UserView />} />
       </Routes>
     </div>
   )

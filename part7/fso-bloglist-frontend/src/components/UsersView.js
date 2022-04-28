@@ -14,7 +14,6 @@ const UsersView = () => {
     fetchUsers().catch(console.error)
   }, [])
 
-  console.log(users)
   if (isLoading) return <span>is loading</span>
   return (
     <table>
