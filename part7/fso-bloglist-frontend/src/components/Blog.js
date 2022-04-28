@@ -1,25 +1,11 @@
-import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-const Blog = ({ blog, like, deleteBlog, user }) => {
-  const [visible, setVisible] = useState(false)
-  const toggleVisibility = () => setVisible(!visible)
-
+const Blog = ({ blog, deleteBlog, user }) => {
   return (
     <div className="blogEntry">
-      {blog.title}{' '}
-      <button onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
+      <Link to={`/blog/${blog.id}`}>{blog.title}</Link>{' '}
       {user && blog.user.id === user.id && (
         <button onClick={() => deleteBlog(blog)}> delete </button>
-      )}
-      {visible && (
-        <div>
-          <p>{blog.url}</p>
-          <p>
-            {blog.likes}
-            <button onClick={() => like(blog)}> like </button>
-          </p>
-          <p>{blog.author}</p>
-        </div>
       )}
     </div>
   )

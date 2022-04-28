@@ -8,9 +8,10 @@ import { Routes, Route } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 
 import Notification from './components/Notification'
-import BlogView from './components/BlogView'
+import BlogListView from './components/BlogListView'
 import UsersView from './components/UsersView'
 import UserView from './components/UserView'
+import BlogView from './components/BlogView'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -44,9 +45,10 @@ const App = () => {
         )}
       </div>
       <Routes>
-        <Route path="/" element={<BlogView user={user} />} />
+        <Route path="/" element={<BlogListView user={user} />} />
         <Route path="/users" element={<UsersView />} />
         <Route path="/user/:id" element={<UserView />} />
+        <Route path="/blog/:id" element={<BlogView />} />
       </Routes>
     </div>
   )
