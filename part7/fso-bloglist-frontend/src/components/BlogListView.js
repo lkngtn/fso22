@@ -39,6 +39,7 @@ const BlogListView = ({ user }) => {
 
   return (
     <>
+      <h2 className="text-xl text-slate-900">Blogs</h2>
       {user && (
         <Togglable showLabel="add blog" hideLabel="cancel" ref={addBlogRef}>
           <AddBlogForm addBlog={addBlog} />

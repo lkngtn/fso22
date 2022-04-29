@@ -21,6 +21,7 @@ const LoginForm = () => {
         <div>
           username
           <input
+            className="border-2"
             type="text"
             id="username"
             value={username}
@@ -31,6 +32,7 @@ const LoginForm = () => {
         <div>
           password
           <input
+            className="border-2"
             type="password"
             id="password"
             value={password}

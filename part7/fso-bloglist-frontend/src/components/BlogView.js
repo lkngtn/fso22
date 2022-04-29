@@ -22,6 +22,10 @@ const BlogView = () => {
           <button onClick={() => dispatch(addLike(blog))}> like </button>
         </p>
         <p>{blog.author}</p>
+        <p>
+          Submitted by:{' '}
+          <a href={`/user/${blog.user.id}`}> {blog.user.username} </a>
+        </p>
       </div>
     )
   }

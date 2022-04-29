@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom'
+import { HiOutlineTrash } from 'react-icons/hi'
 
 const Blog = ({ blog, deleteBlog, user }) => {
   return (
-    <div className="blogEntry">
-      <Link to={`/blog/${blog.id}`}>{blog.title}</Link>{' '}
+    <div className="text-lg">
+      <Link className="text-sky-700" to={`/blog/${blog.id}`}>
+        {blog.title}
+      </Link>{' '}
       {user && blog.user.id === user.id && (
-        <button onClick={() => deleteBlog(blog)}> delete </button>
+        <HiOutlineTrash onClick={() => deleteBlog(blog)}>delete</HiOutlineTrash>
       )}
     </div>
   )

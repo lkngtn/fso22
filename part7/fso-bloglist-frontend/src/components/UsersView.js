@@ -14,7 +14,9 @@ const UsersView = () => {
       <tbody>
         {users.map((user) => (
           <tr key={user.id}>
-            <td> {user.username} </td>
+            <td>
+              <a href={`/user/${user.id}`}>{user.username}</a>
+            </td>
             <td> {user.blogs.length} </td>
           </tr>
         ))}
