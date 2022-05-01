@@ -1,12 +1,9 @@
-import { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import AddBlogForm from './AddBlogForm'
-import Togglable from './Togglable'
 import Blog from './Blog'
 
 import { setNotification } from '../reducers/notificationReducer'
-import { createBlog, addLike, destroyBlog } from '../reducers/blogReducer'
+import { addLike, destroyBlog } from '../reducers/blogReducer'
 
 const BlogListView = ({ user }) => {
   const dispatch = useDispatch()
@@ -27,24 +24,9 @@ const BlogListView = ({ user }) => {
     }
   }
 
-  const addBlog = (blog) => {
-    addBlogRef.current.toggleVisibility()
-    dispatch(createBlog(blog))
-    dispatch(
-      setNotification(`Successfully added '${blog.title}'`, 'success', 5)
-    )
-  }
-
-  const addBlogRef = useRef()
-
   return (
     <>
       <h2 className="text-xl text-slate-900">Blogs</h2>
-      {user && (
-        <Togglable showLabel="add blog" hideLabel="cancel" ref={addBlogRef}>
-          <AddBlogForm addBlog={addBlog} />
-        </Togglable>
-      )}
       {blogs.map((blog) => (
         <Blog
           key={blog.id}
