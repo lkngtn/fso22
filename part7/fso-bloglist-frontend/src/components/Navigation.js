@@ -24,7 +24,7 @@ const Navigation = ({ user }) => {
   justify-between py-4 bg-gray-100 text-gray-500 hover:text-gray-700
   focus:text-gray-700 shadow-lg navbar navbar-expand-lg navbar-light"
     >
-      <div className="absolute ml-[50%]">
+      <div className="absolute ml-[50%] -translate-x-1/2">
         <h1 className="text-2xl bold">BlogList</h1>
       </div>
       <div className="container-fluid w-full flex flex-wrap items-center justify-between px-6">
