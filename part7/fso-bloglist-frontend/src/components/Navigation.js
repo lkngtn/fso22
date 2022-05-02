@@ -19,29 +19,14 @@ const Navigation = ({ user }) => {
     )
   }
   return (
-    // <div>
-    //   <Link style={padding} to="/">
-    //     Blogs
-    //   </Link>
-    //   <Link style={padding} to="/users">
-    //     Users
-    //   </Link>
-    //   {!user && <LoginForm />}
-    //   {user && (
-    //     <span>
-    //       {user.name}{' '}
-    //       <HiLogout className="inline" onClick={() => dispatch(logoutUser())}>
-    //         logout
-    //       </HiLogout>
-    //     </span>
-    //   )}
-    //   {user && <AddBlogModal addBlog={addBlog} />}
-    // </div>
     <nav
       className="relative w-full flex flex-wrap items-center
   justify-between py-4 bg-gray-100 text-gray-500 hover:text-gray-700
   focus:text-gray-700 shadow-lg navbar navbar-expand-lg navbar-light"
     >
+      <div className="absolute ml-[50%]">
+        <h1 className="text-2xl bold">BlogList</h1>
+      </div>
       <div className="container-fluid w-full flex flex-wrap items-center justify-between px-6">
         <button
           className="navbar-toggler text-gray-500 border-0
