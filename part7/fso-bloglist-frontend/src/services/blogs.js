@@ -33,5 +33,12 @@ const update = async (newObject) => {
   return response.data
 }
 
+const comment = async (id, comment) => {
+  const response = await axios.post(`${baseUrl}/${id}/comments`, {
+    content: comment,
+  })
+  return response.data
+}
+
 // eslint-disable-next-line
-export default { getAll, create, destroy, update, setToken }
+export default { getAll, create, destroy, update, setToken, comment }

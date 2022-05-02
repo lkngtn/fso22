@@ -47,7 +47,7 @@ const BlogView = () => {
             </HiOutlineTrash>
           )}
         </div>
-        <BlogComments />
+        <BlogComments blog={blog} />
       </div>
     )
   }

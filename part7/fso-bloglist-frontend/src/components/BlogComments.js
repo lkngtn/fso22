@@ -1,24 +1,15 @@
-const BlogComments = () => {
-  const mockComments = [
-    {
-      content: 'this is a comment',
-      timestamp: new Date(2022, 5, 12, 2, 30),
-    },
-    {
-      content: 'this is yet another comment',
-      timestamp: new Date(2022, 5, 12, 2, 40),
-    },
-  ]
+import CommentForm from './CommentForm'
+
+const BlogComments = ({ blog }) => {
+  const comments = blog.comments ? blog.comments : []
   return (
     <div>
-      {mockComments.map((comment) => (
+      {comments.map((comment) => (
         <div key={comment.content} className="border-b border-solid px-8 m-2">
-          {comment.content}{' '}
-          <span className="text-xs">
-            {comment.timestamp.toLocaleDateString()}
-          </span>
+          {comment.content} <span className="text-xs">{comment.timestamp}</span>
         </div>
       ))}
+      <CommentForm blog={blog} />
     </div>
   )
 }

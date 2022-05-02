@@ -46,6 +46,13 @@ export const addLike = (blogObject) => {
   }
 }
 
+export const addComment = (blogObject, comment) => {
+  return async (dispatch) => {
+    const updatedBlog = await blogService.comment(blogObject.id, comment)
+    dispatch(updateBlog(updatedBlog))
+  }
+}
+
 export const destroyBlog = (blogObject) => {
   return async (dispatch) => {
     await blogService.destroy(blogObject.id)

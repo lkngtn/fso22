@@ -47,6 +47,9 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   if (!('likes' in body)) {
     body['likes'] = 0
   }
+  if (!('comments' in body )) {
+    body['comments'] = []
+  }
   if (!('title' in body) || !('url' in body)) {
     return response.status(400).end()
   }
@@ -57,6 +60,18 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   await user.save()
 
   return response.status(201).json(savedBlog)
+})
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const comment = { content: request.body.content, date: new Date() }
+  const blog = await Blog.findById(request.params.id).populate('user', { username: 1, name: 1 })
+  if (blog) {
+    blog.comments.push(comment)
+    const savedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    response.status(201).json(savedBlog)
+  } else {
+    response.status(404).end()
+  }
 })
 
 blogsRouter.put('/:id', async (request, response) => {
