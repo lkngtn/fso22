@@ -68,7 +68,7 @@ blogsRouter.post('/:id/comments', async (request, response) => {
   if (blog) {
     blog.comments.push(comment)
     const savedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-    response.status(201).json(savedBlog)
+    response.status(201).json(await savedBlog.populate('user', { username: 1, name: 1 }))
   } else {
     response.status(404).end()
   }
@@ -92,7 +92,7 @@ blogsRouter.put('/:id', async (request, response) => {
     user: request.body.user.id
   }
   const savedUpdate = await Blog.findByIdAndUpdate(request.params.id, update, { new: true })
-  return response.json(savedUpdate)
+  return response.json(await savedUpdate.populate('user', { username: 1, name: 1 }))
 })
 
 module.exports = blogsRouter
