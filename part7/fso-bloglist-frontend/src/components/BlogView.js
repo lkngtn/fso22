@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useMatch } from 'react-router-dom'
-import { addLike, deleteBlog } from '../reducers/blogReducer'
+import { addLike, destroyBlog } from '../reducers/blogReducer'
 import { Link } from 'react-router-dom'
 import { HiOutlineTrash, HiOutlineHeart } from 'react-icons/hi'
 import BlogComments from './BlogComments'
+import { setNotification } from '../reducers/notificationReducer'
 
 const BlogView = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -14,6 +15,16 @@ const BlogView = () => {
   const blog = match
     ? blogs && blogs.find((item) => item.id === match.params.id)
     : null
+
+  // TODO: refactor so that deleteBlog function isn't duplicated in BlogListView component
+  const deleteBlog = (blog) => {
+    if (window.confirm(`Are you sure you want to delete ${blog.title}`)) {
+      dispatch(
+        setNotification(`Successfully deleted: "${blog.title}"`, 'success', 5)
+      )
+      dispatch(destroyBlog(blog))
+    }
+  }
 
   if (!blog) return <span>loading...</span>
   if (blog) {
@@ -39,10 +50,7 @@ const BlogView = () => {
             like
           </HiOutlineHeart>
           {user && blog.user.id === user.id && (
-            <HiOutlineTrash
-              className="inline"
-              onClick={() => dispatch(deleteBlog(blog))}
-            >
+            <HiOutlineTrash className="inline" onClick={() => deleteBlog(blog)}>
               delete
             </HiOutlineTrash>
           )}
