@@ -26,7 +26,6 @@ const BlogListView = ({ user }) => {
 
   return (
     <>
-      <h2 className="text-xl text-slate-900">Blogs</h2>
       {blogs.map((blog) => (
         <Blog
           key={blog.id}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { HiPlus } from 'react-icons/hi'
 
 const AddBlogModal = ({ addBlog }) => {
   const emptyBlog = {
@@ -23,15 +24,16 @@ const AddBlogModal = ({ addBlog }) => {
     <>
       <button
         type="button"
-        className="px-6
+        className="px-2.5
         py-2.5
+        m-2
         bg-blue-600
         text-white
         font-medium
         text-xs
         leading-tight
         uppercase
-        rounded
+        rounded-full
         shadow-md
         hover:bg-blue-700 hover:shadow-lg
         focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
@@ -40,15 +42,15 @@ const AddBlogModal = ({ addBlog }) => {
         duration-150
         ease-in-out"
         data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
+        data-bs-target="#addBlogModal"
       >
-        Add Blog
+        <HiPlus />
       </button>
       <div
         className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-        id="exampleModal"
+        id="addBlogModal"
         tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
+        aria-labelledby="addBlogModalLabel"
         aria-hidden="true"
       >
         <div className="modal-dialog relative w-auto pointer-events-none">
@@ -56,7 +58,7 @@ const AddBlogModal = ({ addBlog }) => {
             <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
               <h5
                 className="text-xl font-medium leading-normal text-gray-800"
-                id="exampleModalLabel"
+                id="addBlogModalLabel"
               >
                 Add Blog
               </h5>
